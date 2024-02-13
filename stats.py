@@ -16,8 +16,10 @@ class Pika:
 
     for ranks in ranklist:
       if ranks in ranksjson:
-        pass
-    rank = ranks
+        rank = (ranks)
+        break
+      else:
+        rank = None
 
 
     if 'clan' in api:

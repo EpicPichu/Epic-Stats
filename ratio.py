@@ -14,3 +14,5 @@ def divider(v1, v2):
     ratio = f"{pp:.2f}"
 
     return ratio
+
+# ily_pichu >//< #

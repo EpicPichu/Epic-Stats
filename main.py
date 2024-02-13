@@ -1,5 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 from stats import Pika
+import playermodel
 
 ref = Image.open('2.png')
 stat = Image.new("RGBA", (1366, 768), (0,0,0,0))
@@ -12,10 +13,10 @@ pr = Pika.Profile(ign)
 st = Pika.BWstats(pr[0])
 
 
-hfont = ImageFont.truetype("Mojangles.ttf", 110)
-bfont = ImageFont.truetype("Mojangles.ttf", 50)
-mfont = ImageFont.truetype("Mojangles.ttf", 40)
-sfont = ImageFont.truetype("Mojangles.ttf", 28)
+hfont = ImageFont.truetype("assets/Mojangles.ttf", 110)
+bfont = ImageFont.truetype("assets/Mojangles.ttf", 50)
+mfont = ImageFont.truetype("assets/Mojangles.ttf", 40)
+sfont = ImageFont.truetype("assets/Mojangles.ttf", 28)
 
 #0 Title
 draw.text((490, 40), "BedWars Stats", fill=(255, 255, 255), font=hfont)
@@ -70,28 +71,37 @@ draw.text((852, 647), st[22], fill="lime", font=bfont)
 
 
 
-#Profile
 
-def alignC(posx=238):
+def alignC(posx):
     width = draw.textlength(pr[0], font=mfont)
     newx = float(posx) - (float(width) / 2)
     return int(newx)
 
+def alignR(posx):
+    width = draw.textlength(pr[0], font=mfont)
+    newx = float(posx) - float(width)
+    return int(newx)
+
+
+
+
+#Profile
+
 if pr[2] == 'Champion':
-    rankc = 'red'
+  rankc = 'red'
 elif pr[2] == 'Titan':
-    rankc = 'yellow'
+  rankc = 'yellow'
 elif pr[2] == 'Elite':
-    rankc = 'aqua'
+  rankc = 'aqua'
 elif pr[2] == 'VIP':
-    rankc = 'lime'
+  rankc = 'lime'
 else: rankc = 'white'
 
+#Username
+draw.text((alignC(238), 55), pr[0], fill=rankc, font=mfont)
 
-
-draw.text((alignC(), 55), pr[0], fill=rankc, font=mfont)
-
-
+model = Image.open(playermodel.model(pr[0]))
+stat.paste(model, (51, 110), model)
 
 
 
