@@ -8,7 +8,7 @@ class Pika:
     api = req.json()
 
     username = api['username']
-    level = api['rank']['level']
+    level = str(api['rank']['level'])
 
 
     ranksjson = str(api['ranks'])
