@@ -5,6 +5,8 @@ class Pika:
 
   def Profile(ign):
     req = requests.get(f'https://stats.pika-network.net/api/profile/{ign}')
+    if req.status_code == 400 or req.status_code == 404:
+      return 'Invalid player!'
     api = req.json()
 
     username = api['username']
@@ -47,6 +49,8 @@ class Pika:
   
   def BWstats(ign='EpicPichu', interval='lifetime', mode='all_modes'):
     req = requests.get(f'https://stats.pika-network.net/api/profile/{ign}/leaderboard?type=BEDWARS&interval={interval}&mode={mode}')
+    if req.status_code == 400 or req.status_code == 404:
+      return 'Invalid player!'
     api = req.json()
 
     ###############################
