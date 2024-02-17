@@ -112,7 +112,8 @@ def Stats(ign=inp):
 
 
 
-  #Stats
+  #Stats ->
+  
   #0 Title
   draw.text((490, 40), "BedWars Stats", fill=(255, 255, 255), font=hfont)
   #1 Text Positive
