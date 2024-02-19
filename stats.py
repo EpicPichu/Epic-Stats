@@ -3,7 +3,7 @@ from ratio import divider
 
 class Pika:
 
-  def Profile(ign):
+  def Profile(ign='EpicPichu'):
     req = requests.get(f'https://stats.pika-network.net/api/profile/{ign}')
     if req.status_code == 400 or req.status_code == 404:
       return 'Invalid player!'
@@ -43,7 +43,7 @@ class Pika:
     mail_v = api['email_verified']
     dc_boost = api['discord_boosting']
 
-    return username, level, rank, gName, gTag, gOwner, gLevel, gMembers, dc_v, mail_v, dc_boost
+    return username, level, rank, gName, gTag, gLevel, gMembers, gOwner, dc_v, mail_v, dc_boost
   
   #
   
