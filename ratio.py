@@ -17,7 +17,9 @@ def divider(v1=0, v2=0):
   elif float(100) > pp >= float(10):
     ratio = f"{pp:.1f}"
   elif pp >= float(100):
-    ratio = int(pp)
+    p1 = int(pp)
+    ratio = str(p1)
+    
 
   return ratio
 

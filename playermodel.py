@@ -14,4 +14,4 @@ def model(ignin):
         im_bytes = BytesIO(res.content)
     return im_bytes
 
-model('ily_pichu')
+model('EpicPichu')

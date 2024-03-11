@@ -1,6 +1,6 @@
 import requests
 from ratio import divider
-
+from test import seen
 class Pika:
 
   def Profile(ign='EpicPichu'):
@@ -43,7 +43,10 @@ class Pika:
     mail_v = api['email_verified']
     dc_boost = api['discord_boosting']
 
-    return username, level, rank, gName, gTag, gLevel, gMembers, gOwner, dc_v, mail_v, dc_boost
+    lastonline = seen(api['lastSeen'])
+
+
+    return username, level, rank, gName, gTag, gLevel, gMembers, gOwner, dc_v, mail_v, dc_boost, lastonline
   
   #
   
@@ -113,7 +116,7 @@ class Pika:
     if arha == None:
       arhp, arhv = '0', '0'
     else:
-      arhp, arhv = str(bba[0]['place']), bba[0]['value']
+      arhp, arhv = str(arha[0]['place']), arha[0]['value']
 
     hwsa = api['Highest winstreak reached']['entries']
     if hwsa == None:
@@ -134,10 +137,20 @@ class Pika:
     kdr = divider(kv, dv)
     ahr = divider(arsv, arhv)
 
+    if interval=='lifetime': time = 'Lifetime'
+    elif interval=='yearly': time = 'Yearly'
+    elif interval=='monthly': time = 'Monthly'
+    elif interval=='weekly': time = 'Weekly'
+
+    if mode=='solo': gm = 'Solo'
+    elif mode=='doubles': gm = 'Duos'
+    elif mode=='triples': gm = 'Triples'
+    elif mode=='quad': gm = 'SQuads' 
+    elif mode=='all_modes': gm = 'All Modes'
 
 
 
-    return winv, winp, lossv, lossp, wlr,  fkv, fkp, fdv, fdp, fkdr,   kv, kp, dv, dp, kdr,   bbv, bbp, arsv, arsp, ahr, hwsv, hwsp, gmv, gmp
+    return winv, winp, lossv, lossp, wlr,   fkv, fkp, fdv, fdp, fkdr,   kv, kp, dv, dp, kdr,   bbv, bbp, arsv, arsp, ahr,   hwsv, hwsp, gmv, gmp,   time, gm
 
 
 
