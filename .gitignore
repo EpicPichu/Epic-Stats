@@ -1,0 +1,6 @@
+/assets/ignore
+/.env
+/cogs/__pycache__
+/main/__pycache__
+/__pycache__
+/test.py
