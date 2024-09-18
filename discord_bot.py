@@ -2,9 +2,7 @@ import discord
 from discord.ext import commands
 from discord import Interaction as inter, app_commands
 import os
-from typing import Literal
 from dotenv import load_dotenv
-from codes.genbw import lol
 load_dotenv()
 
 EpicPichu = 598085365815050241
@@ -36,20 +34,6 @@ async def ping(intr:inter):
     latency = round(bot.latency*1000)
     await intr.response.send_message(content=f'Ping: {latency} ms.')
 
-@bot.tree.command(name='epic1', description='sussy')
-async def epic1(
-    interaction: inter,
-
-    username: str ,
-    interval: Literal['Lifetime', 'Yearly', 'Monthly', 'Weekly'] = 'Lifetime' ,
-    gamemode: Literal['Combined', 'Solo', 'Duos', 'Trio', 'Quads'] = 'Combined'
-
-):
-
-    await interaction.response.send_message(f'{username}\n{interval}\n{gamemode}', file=discord.File(await lol(username), 'out.png'))
-
-
-
 @bot.tree.command(name='extensions', description='List all the loaded extensions')
 async def extensions(intr:inter):
     if intr.user.id == EpicPichu:
@@ -58,7 +42,6 @@ async def extensions(intr:inter):
         await intr.response.send_message("Loaded extensions:\n\n" + extensions_list)
     else:
         await intr.response.send_message("You are not allowed to do this!")
-
 
 
 @bot.tree.command(name='unload', description='Unload any specific extension')
