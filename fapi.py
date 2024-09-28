@@ -9,6 +9,13 @@ app = FastAPI()
 connection = sqlite3.connect('names.db')
 db = connection.cursor()
 
+new_table = '''
+CREATE TABLE IF NOT EXIST users(
+lowername TEXT NOT NULL,
+realname TEXT NOT NULL
+);
+'''
+
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
