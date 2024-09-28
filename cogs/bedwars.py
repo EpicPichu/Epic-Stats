@@ -27,7 +27,7 @@ class sus(commands.Cog):
         
         )
 
-    @app_commands.command(name="sus", description="test af")
+    @app_commands.command(name="bedwars", description="Fecth bedwars stats of a player")
     async def sus(
         self, interaction: inter,
 
@@ -48,7 +48,7 @@ class sus(commands.Cog):
 
         discord_file = discord.File(fp=image_data, filename="image.png")
 
-        await interaction.edit_original_response(content=(f'{username}\n{interval}\n{gamemode}'), attachments=[discord_file])
+        await interaction.edit_original_response(attachments=[discord_file])
 
 
 
