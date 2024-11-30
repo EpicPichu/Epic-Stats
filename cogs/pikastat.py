@@ -13,14 +13,15 @@ class pikastat(commands.Cog):
         self.connection = sqlite3.connect('names.db')
         self.db = self.connection.cursor()
 
-        new_table = '''
+        create_table = '''
         CREATE TABLE IF NOT EXIST users(
         lowername TEXT NOT NULL,
         realname TEXT NOT NULL
         );
         '''
-        self.db.execute(new_table)
+        self.db.execute(create_table)
         self.connection.commit()
+        
         self.api_dict = {
             "OpFactions": "opfactions",
             "OpPrison": "opprison",
