@@ -14,7 +14,7 @@ class pikastat(commands.Cog):
         self.db = self.connection.cursor()
 
         create_table = '''
-        CREATE TABLE IF NOT EXIST users(
+        CREATE TABLE IF NOT EXISTS users(
         lowername TEXT NOT NULL,
         realname TEXT NOT NULL
         );
