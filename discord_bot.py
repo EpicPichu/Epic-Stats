@@ -1,12 +1,15 @@
-import discord
+import discord, requests, shutil
 from discord.ext import commands
 from discord import Interaction as inter, app_commands
 import os
 from dotenv import load_dotenv
 load_dotenv()
+from typing import Literal
 
 EpicPichu = 598085365815050241
-
+repo_owner = 'EpicPichu'
+repo_name = 'Epic-Stats'
+branch = 'master'
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -17,22 +20,84 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user.name}')
-
-
-
     for file in os.listdir('./cogs'):
         if file.endswith('.py'):
             await bot.load_extension(f'cogs.{file[:-3]}')
             print(f'Loaded extension: {file[:-3]}')
-            
+
     await bot.tree.sync()
-
-
 
 @bot.tree.command(name='ping', description='The latency between client host and server host')
 async def ping(intr:inter):
     latency = round(bot.latency*1000)
     await intr.response.send_message(content=f'Ping: {latency} ms.')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def clear_directory(local_path):
+    """Clear all files and folders in the target directory."""
+    if os.path.exists(dir):
+        shutil.rmtree(dir)
+    os.makedirs(dir, exist_ok=True)
+
+def syncc(repo_owner, repo_name, branch, *folder_path, local_path):
+    # Clear old files in the local directory
+    clear_directory(local_path)
+    # GitHub API URL for folder contents
+    url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/contents/{folder_path}?ref={branch}"
+    headers = {"Accept": "application/vnd.github.v3+json"}
+    response = requests.get(url, headers=headers)
+
+    outp = ''''''
+
+    if response.status_code == 200:
+        contents = response.json()
+        for item in contents:
+            if item["type"] == "file":
+                file_url = item["download_url"]
+                file_name = item["name"]
+
+                outp = outp + f'Downloaded {file_name}\n'
+
+                file_response = requests.get(file_url)
+                with open(os.path.join(local_path, file_name), "wb") as f:
+                    f.write(file_response.content)
+
+            elif item["type"] == "dir":
+                # Recursively download subdirectories
+                subfolder_path = item["path"]
+                subfolder_local_dir = os.path.join(local_path, item["name"])
+                syncc(repo_owner, repo_name, branch, subfolder_path, subfolder_local_dir)
+    else:
+        outp = (f"Failed to fetch contents: {response.status_code}, {response.text}")
+
+        return outp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @bot.tree.command(name='extensions', description='List all the loaded extensions')
 async def extensions(intr:inter):
@@ -57,10 +122,15 @@ async def unload(intr:inter, ext:str):
 
 
 
-@bot.tree.command(name='reload', description='Reloads all the extensions of this bot')
-async def reload(intr:inter):
+@bot.tree.command(name='sync', description='Reloads the bot with freshly pulled code from github')
+async def reload(intr:inter,
+    folder: Literal['cogs', 'assets'] = 'cogs'
+    ):
 
     if intr.user.id == EpicPichu:
+
+        response = syncc(repo_owner, repo_name, branch, folder, f'./{folder}')
+
         # Get a list of all Python files in the 'cogs' directory
         cog_files = [filename[:-3] for filename in os.listdir('./cogs') if filename.endswith('.py')]
         
@@ -78,12 +148,15 @@ async def reload(intr:inter):
 
         for extension in extension_list:
             await bot.reload_extension(extension)
-        await intr.response.send_message("All extensions reloaded.")
+
+        await intr.response.send_message(response, ephemeral=True)
 
         await bot.tree.sync()
     else:
-        await intr.response.send_message("You are not allowed to do this!")
+        await intr.response.send_message("You are not allowed to do this!", ephemeral=True)
 
 bot.run(os.getenv('token'))
+
+
 
 # ily_pichu >//< crazy
