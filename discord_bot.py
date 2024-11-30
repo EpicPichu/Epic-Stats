@@ -2,8 +2,6 @@ import discord, requests, shutil
 from discord.ext import commands
 from discord import Interaction as inter, app_commands
 import os
-from dotenv import load_dotenv
-load_dotenv()
 from typing import Literal
 
 EpicPichu = 598085365815050241
@@ -26,11 +24,6 @@ async def on_ready():
             print(f'Loaded extension: {file[:-3]}')
 
     await bot.tree.sync()
-
-@bot.tree.command(name='ping', description='The latency between client host and server host')
-async def ping(intr:inter):
-    latency = round(bot.latency*1000)
-    await intr.response.send_message(content=f'Ping: {latency} ms.')
 
 
 
@@ -99,9 +92,16 @@ def syncc(repo_owner, repo_name, branch, folder_path, local_path):
 
 
 
+#                               PING
 
 
+@bot.tree.command(name='ping', description='The latency between client host and server host')
+async def ping(intr:inter):
+    latency = round(bot.latency*1000)
+    await intr.response.send_message(content=f'Ping: {latency} ms.')
 
+
+#                               EXTENSIONS
 
 
 @bot.tree.command(name='extensions', description='List all the loaded extensions')
@@ -114,17 +114,44 @@ async def extensions(intr:inter):
         await intr.response.send_message("You are not allowed to do this!")
 
 
-@bot.tree.command(name='unload', description='Unload any specific extension')
-@app_commands.describe(ext='Specify the extension to unload')
+#                                RELOAD
 
-async def unload(intr:inter, ext:str):
+
+@bot.tree.command(name='reload', description='Reload extensions and search for new ones')
+async def reload(intr:inter):
+
     if intr.user.id == EpicPichu:
 
-        await bot.unload_extension(f'cogs.{ext}')
-        await intr.response.send_message(f'Unloaded {ext}.')
-    else:
-        await intr.response.send_message("You are not allowed to do this!")
+        await intr.response.send_message('Reloading...', ephemeral=True)
 
+        # Get a list of all Python files in the 'cogs' directory
+        cog_files = [filename[:-3] for filename in os.listdir('./cogs') if filename.endswith('.py')]
+        
+        # Get a list of currently loaded extensions
+        loaded_extensions = [extension.replace('cogs.', '') for extension in bot.extensions]
+
+        new_extensions = ""
+
+        # Check for new extensions to load
+        for cog in cog_files:
+            if cog not in loaded_extensions:
+                await bot.load_extension(f'cogs.{cog}')
+                new_extensions += f"Loaded extension: {cog}\n"
+        
+        # Reload all loaded extensions
+        extension_list = dict(bot.extensions)
+
+        for extension in extension_list:
+            await bot.reload_extension(extension)
+
+        await intr.edit_original_response(content=new_extensions)
+
+        await bot.tree.sync()
+    else:
+        await intr.response.send_message("You are not allowed to do this!", ephemeral=True)
+
+
+#                              SYNC
 
 
 @bot.tree.command(name='sync', description='Reloads the bot with freshly pulled code from github')
@@ -150,7 +177,7 @@ async def reload(intr:inter,
         for cog in cog_files:
             if cog not in loaded_extensions:
                 await bot.load_extension(f'cogs.{cog}')
-                new_extensions += f"Loaded extension: {cog}\n"
+                new_extensions += f"Loaded new extension: {cog}\n"
         
         # Reload all loaded extensions
         extension_list = dict(bot.extensions)
@@ -158,13 +185,13 @@ async def reload(intr:inter,
         for extension in extension_list:
             await bot.reload_extension(extension)
 
-        await intr.edit_original_response(content=(response + '\n\n\n' + new_extensions))
+        await intr.edit_original_response(content=new_extensions)
 
         await bot.tree.sync()
     else:
         await intr.response.send_message("You are not allowed to do this!", ephemeral=True)
 
-bot.run(os.getenv('token'))
+bot.run('token')
 
 
 

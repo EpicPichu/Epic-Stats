@@ -13,12 +13,14 @@ class pikastat(commands.Cog):
         self.connection = sqlite3.connect('names.db')
         self.db = self.connection.cursor()
 
-        self.new_table = '''
+        new_table = '''
         CREATE TABLE IF NOT EXIST users(
         lowername TEXT NOT NULL,
         realname TEXT NOT NULL
         );
         '''
+        self.db.execute(new_table)
+        self.connection.commit()
         self.api_dict = {
             "OpFactions": "opfactions",
             "OpPrison": "opprison",
@@ -41,10 +43,6 @@ class pikastat(commands.Cog):
             "Yearly": "yearly"
         }
 
-    # Optional: Add any setup code here
-    @commands.Cog.listener()
-    async def on_ready(self):
-        print('MyCog is ready.')
 
 
 
