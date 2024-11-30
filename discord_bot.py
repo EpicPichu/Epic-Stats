@@ -84,8 +84,6 @@ async def reload(intr:inter):
     else:
         await intr.response.send_message("You are not allowed to do this!")
 
-    
-
 bot.run(os.getenv('token'))
 
 # ily_pichu >//< crazy
