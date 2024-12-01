@@ -144,4 +144,4 @@ def bedwars(
     output = BytesIO()
     bg.save(output, 'PNG')
     output.seek(0)
-    return output.getvalue()
+    return output
