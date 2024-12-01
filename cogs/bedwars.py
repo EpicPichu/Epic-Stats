@@ -1,8 +1,7 @@
-import discord, sqlite3, datetime, asyncio
+import discord, sqlite3, datetime, asyncio, aiohttp, time
 from discord import app_commands, Interaction as inter
 from discord.ext import commands 
 from  typing import Literal
-import aiohttp
 from main.images import *
 
 
@@ -40,7 +39,8 @@ class bedwars(commands.Cog):
         gamemode: Literal['All_Modes', 'Solo', 'Doubles', 'Triples', 'Quads'] = 'All_Modes'
 
     ):
-        
+
+        start = time.time()
         initial_message = await interaction.response.send_message("Downloading image, please wait...")
 
 
@@ -238,7 +238,9 @@ class bedwars(commands.Cog):
 
         discord_file = discord.File(fp=final, filename="image.png")
 
-        await interaction.edit_original_response(content="_ _", attachments=[discord_file])
+        end = time.time()
+        taim = (end - start)
+        await interaction.edit_original_response(content=f"`Time: {taim:2f}`", attachments=[discord_file])
 
 
 

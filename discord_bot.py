@@ -156,7 +156,7 @@ async def reload(intr:inter):
 
 @bot.tree.command(name='sync', description='Reloads the bot with freshly pulled code from github')
 async def reload(intr:inter,
-    folder: Literal['cogs', 'assets'] = 'cogs'
+    folder: Literal['cogs', 'assets', 'main'] = 'cogs'
     ):
 
     if intr.user.id == EpicPichu:
