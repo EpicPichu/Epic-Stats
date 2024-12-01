@@ -3,12 +3,11 @@ from discord import app_commands, Interaction as inter
 from discord.ext import commands 
 from  typing import Literal
 import aiohttp
-from io import BytesIO
 from main.images import *
 
 
 # Define the class for your cog
-class sus(commands.Cog):
+class bedwars(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -33,7 +32,7 @@ class sus(commands.Cog):
         )
 
     @app_commands.command(name="bedwars", description="Fecth bedwars stats of a player")
-    async def sus(
+    async def bedwars(
         self, interaction: inter,
 
         username: str ,
@@ -224,7 +223,7 @@ class sus(commands.Cog):
 
 
 
-        final = bedwars(username, rank_color, guild, 'aqua', (f'{gName} ({gTag})'), (f"Level {gLevel} | {gMembers} Members"), (f'Owner: {gOwner}'),
+        final = bwimg(username, rank_color, guild, 'aqua', (f'{gName} ({gTag})'), (f"Level {gLevel} | {gMembers} Members"), (f'Owner: {gOwner}'),
                 lastonline, "white",image_data, interval.upper(), "white", gamemode.upper(), "white",
                 "lime", wins[0], fkills[0], kills[0], bbreak[0], hws[0], loss[0], fdeaths[0], deaths[0], arrows_shot[0], games[0],
                 "aqua", f'(#{wins[1]})', f'(#{fkills[1]})', f'(#{kills[1]})', f'(#{bbreak[1]})', f'(#{hws[1]})',
@@ -239,7 +238,7 @@ class sus(commands.Cog):
 
         discord_file = discord.File(fp=final, filename="image.png")
 
-        await interaction.edit_original_response(content="", attachments=[discord_file])
+        await interaction.edit_original_response(content="_ _", attachments=[discord_file])
 
 
 
@@ -252,4 +251,4 @@ class sus(commands.Cog):
 
 # Setup function to add the cog to the bot
 async def setup(bot):
-    await bot.add_cog(sus(bot))
+    await bot.add_cog(bedwars(bot))

@@ -20,7 +20,7 @@ def alignR(posx, text, font=sfont):
     newx = float(posx) - float(width)
     return int(newx)
 
-def bedwars(
+def bwimg(
         
     ign,
     ign_c,
