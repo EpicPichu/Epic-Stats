@@ -239,8 +239,8 @@ class bedwars(commands.Cog):
         discord_file = discord.File(fp=final, filename="image.png")
 
         end = time.time()
-        taim = (end - start)
-        await interaction.edit_original_response(content=f"`Time: {taim:2f}`", attachments=[discord_file])
+        taim = round(end - start, 3)
+        await interaction.edit_original_response(content=f"`Time: {taim}`", attachments=[discord_file])
 
 
 
